@@ -75,7 +75,7 @@ namespace caffe {
 				for (int i = 0; i < count; i++) {
 					bottom_diff[i] = Dtype(2) * diff_data[i] / num / bottom_data[i] - Dtype(2) * gamma * log_sum / num / num / diff_data[i];
 				}
-
+				//ta da
 			}
 	}
 
