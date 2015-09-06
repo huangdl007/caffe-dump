@@ -242,6 +242,33 @@ class ImageDataLayer : public BasePrefetchingDataLayer<Dtype> {
 };
 
 /**
+ * @brief Provides data to the Net from image files and depth information from txt.
+ *
+ * TODO(dox): thorough documentation for Forward and proto params.
+ */
+template <typename Dtype>
+class DepthDataLayer : public BasePrefetchingDataLayer<Dtype> {
+public:
+	explicit DepthDataLayer(const LayerParameter& param)
+		: BasePrefetchingDataLayer<Dtype>(param) {}
+	virtual ~DepthDataLayer();
+	virtual void DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
+		const vector<Blob<Dtype>*>& top);
+
+	virtual inline const char* type() const { return "DepthData"; }
+	virtual inline int ExactNumBottomBlobs() const { return 0; }
+	virtual inline int ExactNumTopBlobs() const { return 2; }
+
+protected:
+	virtual void InternalThreadEntry();
+	virtual void ReadDepthToArray(const string& filename, float* depths);
+	int lines_id_;
+	vector<std::pair<std::string, std::string> > lines_;
+	vector<int> _image_shape_;
+	vector<int> _depth_shape_;
+};
+
+/**
  * @brief Provides data to the Net from memory.
  *
  * TODO(dox): thorough documentation for Forward and proto params.
